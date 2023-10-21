@@ -4,6 +4,7 @@ import prisma from "@/app/lib/prisma";
 import { PostFormType } from "@/app/types/post";
 import { Prisma } from "@prisma/client";
 import { getServerSession } from "next-auth";
+import { findUser } from "../user/findUser";
 
 export const createPost = async (data: PostFormType) => {
   "use server"
@@ -30,27 +31,5 @@ export const createPost = async (data: PostFormType) => {
     return post
   }catch (error) {
     return { error: "投稿に失敗しました" }
-  }
-}
-
-// ユーザーを取得する関数
-const findUser = async (email: string | null | undefined) => {
-  try {
-    if(email === null || email === undefined){
-      throw new Error("セッションからメールアドレスを取得することができませんでした")
-    } 
-
-    const user = await prisma.user.findUnique({
-      where: { email: email },
-    });
-
-    if(user){
-      return user
-    }
-
-    throw new Error("ユーザーが見つかりませんでした")
-  } catch (error) {
-    console.error("ユーザーIDの取得に失敗しました:", error);
-    throw error;
   }
 }

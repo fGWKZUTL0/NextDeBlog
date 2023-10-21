@@ -1,12 +1,16 @@
 "use client"
 
+import { postsAtom } from "@/app/atoms/postAtom"
+import Posts from "@/app/components/admin/post/Posts"
 import { createPost } from "@/app/servers/post/create"
 import { PostFormType } from "@/app/types/post"
 import { Button, Input, Textarea } from "@nextui-org/react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { useRecoilState } from "recoil"
 
 export default function Page(){
+  const [, setPosts] = useRecoilState(postsAtom);
   const [error, setError] = useState<string | null>(null)
   const methods = useForm<PostFormType>({
     defaultValues: {
@@ -26,6 +30,13 @@ export default function Page(){
 
     if("error" in postOrError){
       setError(postOrError.error)
+    }else{
+      methods.reset({
+        title: "",
+        content: ""
+      })
+
+      setPosts((prev) => [postOrError, ...prev])
     }
   })
 
@@ -49,6 +60,8 @@ export default function Page(){
           </Button>
         </div>
       </form>
+
+      <Posts />
     </div>
   )
 } 
