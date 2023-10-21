@@ -16,15 +16,21 @@ export const createPost = async (data: PostFormType) => {
     throw new Error("ユーザーIDの取得に失敗しました");
   }
 
-  await prisma.post.create({ data: {
-    title: data.title,
-    content: data.content,
-    user: {
-      connect: {
-        id: user.id,
+  try{
+    const post = await prisma.post.create({ data: {
+      title: data.title,
+      content: data.content,
+      user: {
+        connect: {
+          id: user.id,
+        },
       },
-    },
-  } as Prisma.PostCreateInput })
+    } as Prisma.PostCreateInput })
+  
+    return post
+  }catch (error) {
+    return { error: "投稿に失敗しました" }
+  }
 }
 
 // ユーザーを取得する関数
