@@ -6,6 +6,14 @@ export type PostProps = {
 }
 
 export default function Post({post}: PostProps){
+  const updatedAtJPNText = [
+    `${post.updatedAt.getFullYear()}年`,
+    `${post.updatedAt.getMonth() + 1}月`,
+    `${post.updatedAt.getSeconds()}日`,
+    `${post.updatedAt.getHours()}時`,
+    `${post.updatedAt.getMinutes()}分`,
+    `${post.updatedAt.getSeconds()}秒`,
+  ]
   
   return(
     <>
@@ -16,6 +24,7 @@ export default function Post({post}: PostProps){
           </Link>
         </h1>
         <p className="text-gray-600 line-clamp-2">{post.content}</p>
+        <p className="mt-2">最終更新日: {updatedAtJPNText.join("")}</p>
       </div>
     </>
   )
