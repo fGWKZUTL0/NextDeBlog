@@ -12,10 +12,11 @@ import { useRecoilState } from "recoil";
 type FormProps = {
   defaultValuesJSON: {
     defaultValues: PostFormType
-  }
+  },
+  formMode?: "create" | "edit"
 }
 
-export default function Form({defaultValuesJSON}: FormProps){
+export default function Form({defaultValuesJSON, formMode}: FormProps){
   const [, setPosts] = useRecoilState(postsAtom);
   const [error, setError] = useState<string | null>(null)
   const methods = useForm<PostFormType>(defaultValuesJSON)
@@ -45,19 +46,33 @@ export default function Form({defaultValuesJSON}: FormProps){
     <>
       {error && <span className="text-red-600 font-bold">{error}</span>}
       <form onSubmit={onSubmit}>
-        <Input type="text" label="Title" {...register("title", { required: "titleは必須項目です" })} className="w-full md:w-1/2" />
-        { errors.title && <span className="text-red-600">{errors.title.message}</span> }
-        <Textarea
-          {...register("content", { required: "contentは必須項目です" })}
-          label="Content"
-          labelPlacement="outside"
-          placeholder="Enter your content"
-          className="w-full"
-        />
-        { errors.content && <span className="text-red-600">{errors.content.message}</span> }
+        <div className="mb-2 md:w-1/2">
+          <Input
+            type="text"
+            label="Title"
+            key="outside"
+            labelPlacement="outside"
+            placeholder="Enter your title"
+            {...register("title", { required: "titleは必須項目です" })}
+            className="w-full"
+            isRequired
+          />
+          { errors.title && <span className="text-red-600">{errors.title.message}</span> }
+        </div>
+        <div className="">
+          <Textarea
+            {...register("content", { required: "contentは必須項目です" })}
+            label="Content"
+            labelPlacement="outside"
+            placeholder="Enter your content"
+            className="w-full"
+            isRequired
+          />
+          { errors.content && <span className="text-red-600">{errors.content.message}</span> }
+        </div>
         <div className="py-4">
-          <Button type="submit" color="primary">
-            Post
+          <Button type="submit" color={ formMode === "edit" ? "secondary" :"primary"}>
+            { formMode === "edit" ? "Edit" : "Post" }
           </Button>
         </div>
       </form>
