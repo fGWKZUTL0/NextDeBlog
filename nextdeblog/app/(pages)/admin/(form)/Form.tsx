@@ -3,7 +3,7 @@
 import { postsAtom } from "@/app/atoms/postAtom";
 import { createPost } from "@/app/servers/post/create";
 import { PostFormType } from "@/app/types/post";
-import { Textarea, Button } from "@nextui-org/react";
+import { Textarea, Button, Link } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -85,7 +85,14 @@ export default function Form({defaultValuesJSON, formMode}: FormProps){
           />
           { errors.content && <span className="text-red-600">{errors.content.message}</span> }
         </div>
-        <div className="py-4">
+        <div className="flex gap-x-2 py-4">
+          { formMode === "edit" &&
+            <Link href="/admin">
+              <Button type="button" color={"primary"}>
+                一覧に戻る
+              </Button>
+            </Link>
+          }
           <Button type="submit" color={ formMode === "edit" ? "secondary" :"primary"}>
             { formMode === "edit" ? "Edit" : "Post" }
           </Button>
