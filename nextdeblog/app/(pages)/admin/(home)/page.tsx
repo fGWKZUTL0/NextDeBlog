@@ -9,4 +9,4 @@ export default async function Page(){
       <span>{session?.user?.name}</span>
     </>
   )
-}
+} 
