@@ -13,9 +13,11 @@ export default async function Layout({
 
   return (
     <>
-      <Header />
-      <main className="w-[70vw] mx-auto">
-        {children}
+      <main className="mx-6">
+        <div className="md:w-[70vw] md:mx-auto">
+          <Header />
+          {children}
+        </div>
       </main>
     </>
   )
