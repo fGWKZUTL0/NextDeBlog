@@ -1,0 +1,14 @@
+services:
+  nextdeblog:
+    build: ./nextdeblog
+    image: nextdeblog
+    container_name: nextdeblog
+    ports:
+      - "8001:3000"
+    environment:
+     - WATCHPACK_POLLING=true
+    volumes:
+      - ./nextdeblog:/myapp
+    restart: always
+    tty: true
+    stdin_open: true
