@@ -1,20 +1,15 @@
-"use client"
-
+import { getServerSession } from "next-auth/next"
 import Sidebar from "@/app/components/admin/sidebar/SideBar"
-import { signIn, useSession } from "next-auth/react"
-import { useEffect } from "react"
+import { nextAuthOptions } from "@/app/lib/auth/options"
+import { redirect } from "next/navigation"
 
-export default function Layout({
+export default async function Layout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const { data: session } = useSession()
-  useEffect(() => {
-    if (!session) {
-      signIn();
-    }
-  }, [session]);
+  const session = await getServerSession(nextAuthOptions)
+  !session && redirect(`/sign_in`)
 
   return (
     <div className="flex">
