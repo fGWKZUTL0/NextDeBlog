@@ -1,12 +1,9 @@
 "use client"
 
+import { createPost } from "@/app/servers/post/create"
+import { PostFormType } from "@/app/types/post"
 import { Button, Input, Textarea } from "@nextui-org/react"
 import { useForm } from "react-hook-form"
-
-type PostFormType = {
-  title: string,
-  content: string
-}
 
 export default function Page(){
   const methods = useForm<PostFormType>({
@@ -16,12 +13,16 @@ export default function Page(){
     }
   })
 
+  const onSubmit = methods.handleSubmit((data) => {
+    createPost(data)
+  })
+
   return(
     <div className="w-full md:w-1/2">
-      <form onSubmit={methods.handleSubmit((data) => console.log(data))}>
-        <Input type="text" label="Title" {...methods.register('title')} className="w-full md:w-1/2" />
+      <form onSubmit={onSubmit}>
+        <Input type="text" label="Title" {...methods.register("title")} className="w-full md:w-1/2" />
         <Textarea
-          {...methods.register('content', { required: true })}
+          {...methods.register("content", { required: true })}
           label="Content"
           labelPlacement="outside"
           placeholder="Enter your content"
