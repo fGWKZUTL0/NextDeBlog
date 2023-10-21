@@ -1,7 +1,8 @@
 import { getServerSession } from "next-auth/next"
-import Sidebar from "@/app/components/admin/sidebar/SideBar"
+import Header from "@/app/components/admin/header/Header"
 import { nextAuthOptions } from "@/app/lib/auth/options"
 import { redirect } from "next/navigation"
+import AppProvider from "./provider"
 
 export default async function Layout({
   children,
@@ -12,11 +13,15 @@ export default async function Layout({
   !session && redirect(`/sign_in`)
 
   return (
-    <div className="flex">
-      <Sidebar />
-      <main>
-        {children}
+    <>
+      <main className="mx-6">
+        <div className="md:w-[70vw] md:mx-auto">
+          <AppProvider>
+            <Header />
+            {children}
+          </AppProvider>
+        </div>
       </main>
-    </div>
+    </>
   )
 }
