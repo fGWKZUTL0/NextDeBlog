@@ -1,11 +1,13 @@
-import { nextAuthOptions } from "@/app/lib/auth/options"
 import { getServerSession } from "next-auth"
-import { signIn, signOut, useSession } from "next-auth/react"
 import SignOutButton from "./SignOutButton"
+import { nextAuthOptions } from "@/app/lib/auth/options"
 
 export default async function Sidebar(){
+  const session = await getServerSession(nextAuthOptions)
+
   return(
     <section>
+      {session?.user?.name}
       <SignOutButton />
     </section>
   )

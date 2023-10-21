@@ -12,7 +12,7 @@ datasource db {
 
 model Account {
   id                 String  @id @default(cuid())
-  adminId             String
+  userId             String
   type               String
   provider           String
   providerAccountId  String
@@ -24,7 +24,7 @@ model Account {
   id_token           String?  @db.Text
   session_state      String?
 
-  admin Admin @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -32,12 +32,12 @@ model Account {
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
-  adminId       String
+  userId       String
   expires      DateTime
-  admin         Admin     @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model Admin {
+model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique

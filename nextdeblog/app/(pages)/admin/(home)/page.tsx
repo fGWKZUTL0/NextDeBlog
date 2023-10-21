@@ -1,8 +1,12 @@
-export default function Page(){
+import { nextAuthOptions } from "@/app/lib/auth/options"
+import { getServerSession } from "next-auth"
+
+export default async function Page(){
+  const session = await getServerSession(nextAuthOptions)
 
   return(
     <>
-      <span>aaaaaa</span>
+      <span>{session?.user?.name}</span>
     </>
   )
 }
