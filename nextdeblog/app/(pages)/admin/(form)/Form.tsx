@@ -5,21 +5,36 @@ import { createPost } from "@/app/servers/post/create";
 import { PostFormType } from "@/app/types/post";
 import { Textarea, Button } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 
 type FormProps = {
-  defaultValuesJSON: {
-    defaultValues: PostFormType
-  },
+  defaultValuesJSON: PostFormType | { error: string },
   formMode?: "create" | "edit"
 }
 
 export default function Form({defaultValuesJSON, formMode}: FormProps){
   const [, setPosts] = useRecoilState(postsAtom);
   const [error, setError] = useState<string | null>(null)
-  const methods = useForm<PostFormType>(defaultValuesJSON)
+  const methods = useForm<PostFormType>({
+    defaultValues: {
+      title: "",
+      content: ""
+    }
+  })
+
+  // サーバーサイドコンポーネントでdefaultValuesJSONを設定すると、formType="create"の時にeditのdefaultValuesが反映されてしまうので、useEffectで対応
+  useEffect(() => {
+    if("error" in defaultValuesJSON){
+      setError(defaultValuesJSON.error)
+    }else{
+      methods.reset({
+        title: defaultValuesJSON.title,
+        content: defaultValuesJSON.content
+      })
+    }
+  }, [defaultValuesJSON])
 
   const {
     handleSubmit,
