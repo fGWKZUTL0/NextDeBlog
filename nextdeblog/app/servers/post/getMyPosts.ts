@@ -24,6 +24,9 @@ export const getMyPosts = async () => {
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        user: true,
+      },
     })
 
     return posts

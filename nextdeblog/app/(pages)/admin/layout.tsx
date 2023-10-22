@@ -2,7 +2,6 @@ import { getServerSession } from "next-auth/next"
 import Header from "@/app/components/admin/header/Header"
 import { nextAuthOptions } from "@/app/lib/auth/options"
 import { redirect } from "next/navigation"
-import AppProvider from "./provider"
 
 export default async function Layout({
   children,
@@ -16,10 +15,8 @@ export default async function Layout({
     <>
       <main className="mx-6">
         <div className="md:w-[70vw] md:mx-auto">
-          <AppProvider>
             <Header />
             {children}
-          </AppProvider>
         </div>
       </main>
     </>
