@@ -2,7 +2,7 @@
 
 import prisma from "@/app/lib/prisma"
 
-export const getPost = async (id: string) => {
+export const getPost = async (id: string | undefined) => {
   "use server"
 
   try{
@@ -11,7 +11,13 @@ export const getPost = async (id: string) => {
         id: id,
       },
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          }
+        }
       },
     })
 

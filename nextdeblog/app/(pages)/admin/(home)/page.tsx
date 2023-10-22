@@ -11,7 +11,7 @@ export default function Page(){
 
   return(
     <div className="w-full md:w-1/2">
-      <Form defaultValuesJSON={defaultValuesJSON.defaultValues} />
+      <Form defaultValuesJSON={defaultValuesJSON.defaultValues} formMode="create" />
       <Posts />
     </div>
   )

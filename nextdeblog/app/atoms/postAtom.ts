@@ -1,5 +1,6 @@
-import { Post, User } from '@prisma/client';
+import { Post } from '@prisma/client';
 import { atom } from 'recoil';
+import { UserType } from '../types/user';
 
 export const postsAtom = atom<Post[]>({
   key: 'postsAtom',
@@ -7,7 +8,7 @@ export const postsAtom = atom<Post[]>({
 });
 
 
-export const postWithUserAtom = atom<Array<Post & {user: User}>>({
+export const postWithUserAtom = atom<Array<Post & {user: UserType}>>({
   key: 'postWithUserAtom',
   default: [],
 });

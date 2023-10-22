@@ -1,5 +1,6 @@
+import { UserType } from "@/app/types/user";
 import { User } from "@nextui-org/react";
-import { Post, User as UserType } from "@prisma/client";
+import { Post } from "@prisma/client";
 import Link from "next/link";
 
 export type PostProps = {

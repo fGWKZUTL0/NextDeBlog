@@ -2,6 +2,7 @@
 
 import { postsAtom } from "@/app/atoms/postAtom";
 import { createPost } from "@/app/servers/post/create";
+import { getPost } from "@/app/servers/post/getPost";
 import { updatePost } from "@/app/servers/post/update";
 import { PostFormType } from "@/app/types/post";
 import { Textarea, Button, Link, input } from "@nextui-org/react";
@@ -17,29 +18,35 @@ type FormProps = {
   formMode?: "create" | "edit"
 }
 
-export default function Form({postId, defaultValuesJSON, formMode}: FormProps){
+export default function Form({postId, formMode}: FormProps){
   const router = useRouter();
   const [, setPosts] = useRecoilState(postsAtom);
   const [error, setError] = useState<string | null>(null)
-  const methods = useForm<PostFormType>({
-    defaultValues: {
-      id: formMode === "edit" ? postId : undefined,
-      title: "",
-      content: ""
-    }
-  })
+  const methods = useForm<PostFormType>()
 
   // サーバーサイドコンポーネントでdefaultValuesJSONを設定すると、formType="create"の時にeditのdefaultValuesが反映されてしまうので、useEffectで対応
   useEffect(() => {
-    if("error" in defaultValuesJSON){
-      setError(defaultValuesJSON.error)
-    }else{
-      methods.reset({
-        title: defaultValuesJSON.title,
-        content: defaultValuesJSON.content
-      })
-    }
-  }, [defaultValuesJSON])
+    (async () => {
+      const newDefaultValuesJSON = {
+        id: undefined,
+        title: "",
+        content: ""
+      }
+
+      const defaultValuesJSON = formMode === "edit" ? await getPost(postId) as PostFormType | { error: string } : newDefaultValuesJSON
+
+      if(defaultValuesJSON && "error" in defaultValuesJSON){
+        setError(defaultValuesJSON.error)
+      }else{
+        methods.reset({
+          id: defaultValuesJSON.id,
+          title: defaultValuesJSON.title,
+          content: defaultValuesJSON.content
+        })
+      }
+    })()
+    return () => {}
+    }, [])
 
   const {
     handleSubmit,
@@ -76,7 +83,8 @@ export default function Form({postId, defaultValuesJSON, formMode}: FormProps){
     <>
       {error && <span className="text-red-600 font-bold">{error}</span>}
       <form onSubmit={
-        formMode === "create" ? onCreateSubmit : onUpdateSubmit}>
+        formMode === "create" ? onCreateSubmit : onUpdateSubmit
+      }>
         { formMode === "edit" && <input type="hidden" {...register("id")} /> }
         <div className="mb-2 md:w-1/2">
           <Input
@@ -104,13 +112,14 @@ export default function Form({postId, defaultValuesJSON, formMode}: FormProps){
         </div>
         <div className="flex gap-x-2 py-4">
           { formMode === "edit" &&
-            <Link href="/admin">
-              <Button type="button" color={"primary"}>
+            <Button
+              // href属性だと普通にリダイレクトされてしまうので、onClickでrouter.pushを使う
+              onClick={() => router.push("/admin")}
+              color={"primary"}>
                 一覧に戻る
-              </Button>
-            </Link>
+            </Button>
           }
-          <Button type="submit" color={ formMode === "edit" ? "secondary" :"primary"}>
+          <Button type="submit" color="secondary">
             { formMode === "edit" ? "Edit" : "Post" }
           </Button>
         </div>
