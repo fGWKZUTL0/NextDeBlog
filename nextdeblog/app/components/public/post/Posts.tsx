@@ -1,13 +1,13 @@
 "use client";
 
-import { postsAtom } from "@/app/atoms/postAtom";
+import { postWithUserAtom } from "@/app/atoms/postAtom";
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import Post from "./Post";
 import { getPublicPosts } from "@/app/servers/post/getPublicPosts";
 
 export default function Posts() {
-  const [posts, setPosts] = useRecoilState(postsAtom);
+  const [posts, setPosts] = useRecoilState(postWithUserAtom);
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {

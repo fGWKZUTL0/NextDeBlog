@@ -1,8 +1,11 @@
-import { Post } from "@prisma/client";
+import { User } from "@nextui-org/react";
+import { Post, User as UserType } from "@prisma/client";
 import Link from "next/link";
 
 export type PostProps = {
-  post: Post
+  post: Post & {
+    user: UserType
+  }
 }
 
 export default function Post({post}: PostProps){
@@ -18,8 +21,14 @@ export default function Post({post}: PostProps){
   return(
     <>
       <div className="border-b-2 border-gray-200 py-4">
+        <User   
+          name={post?.user?.name}
+          avatarProps={{
+            src: post?.user?.image || ""
+          }}
+        />
         <h1 className="text-2xl font-bold"> 
-          <Link href={`/admin/post/${post.id}/edit`} className="hover:text-blue-600">
+          <Link href={`/admin/post/${post.id}/`} className="hover:text-blue-600">
             {post.title} 
           </Link>
         </h1>
