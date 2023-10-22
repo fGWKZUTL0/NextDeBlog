@@ -24,6 +24,15 @@ export const getMyPosts = async () => {
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          }
+        }
+      },
     })
 
     return posts

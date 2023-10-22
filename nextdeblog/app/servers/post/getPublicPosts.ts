@@ -2,13 +2,13 @@
 
 import prisma from "@/app/lib/prisma"
 
-export const getPost = async (id: string | undefined) => {
+export const getPublicPosts = async () => {
   "use server"
 
   try{
-    const post = await prisma.post.findUnique({
-      where: {
-        id: id,
+    const posts = await prisma.post.findMany({
+      orderBy: {
+        createdAt: "desc",
       },
       include: {
         user: {
@@ -21,13 +21,9 @@ export const getPost = async (id: string | undefined) => {
       },
     })
 
-    if(post === null){
-      throw new Error("投稿が見つかりませんでした")
-    }
-
-    return post
+    return posts
 
   }catch (error) {
     return { error: "投稿の取得に失敗しました" }
   }
-} 
+}
