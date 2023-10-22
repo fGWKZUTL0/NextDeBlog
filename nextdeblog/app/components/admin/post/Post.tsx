@@ -9,7 +9,7 @@ export default function Post({post}: PostProps){
   const updatedAtJPNText = [
     `${post.updatedAt.getFullYear()}年`,
     `${post.updatedAt.getMonth() + 1}月`,
-    `${post.updatedAt.getSeconds()}日`,
+    `${post.updatedAt.getDate()}日`,
     `${post.updatedAt.getHours()}時`,
     `${post.updatedAt.getMinutes()}分`,
     `${post.updatedAt.getSeconds()}秒`,
