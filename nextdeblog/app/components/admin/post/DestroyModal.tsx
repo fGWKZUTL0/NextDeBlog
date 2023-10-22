@@ -1,8 +1,37 @@
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
+"use client"
 
-export default function DestroyModal(){
+import { postsAtom } from "@/app/atoms/postAtom";
+import { destroyPost } from "@/app/servers/post/destroy";
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
+import { Post } from "@prisma/client";
+import { useState } from "react";
+import { useRecoilState } from "recoil";
+
+type DestroyModalProps = {
+  post: Post
+}
+
+export default function DestroyModal({post}: DestroyModalProps){
+  const [posts, setPosts] = useRecoilState(postsAtom);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const {isOpen, onOpen, onClose} = useDisclosure();
   
+  const handleDestroy = async () => {
+    if(isLoading) return
+
+    setIsLoading(true)
+    const deletedPost = await destroyPost(post.id)
+
+    if("error" in deletedPost){
+      alert(deletedPost.error)
+    }else{
+      setPosts(posts.filter((post) => post.id !== deletedPost.id))
+    }
+
+    setIsLoading(false)
+    onClose()
+  }
+
   return(
     <>
       <div className="w-fit h-full bg-orange-700 rounded-full" onClick={() => onOpen()}>
@@ -23,7 +52,13 @@ export default function DestroyModal(){
                 注意
               </ModalHeader>
               <ModalBody>
-                <p>
+                <p className="font-bold truncate">
+                  {post.title}
+                </p>
+                <p className="line-clamp-2">
+                  {post.content}
+                </p>
+                <p className="mt-4">
                   この投稿を削除してもよろしいですか？
                 </p>
               </ModalBody>
@@ -31,8 +66,8 @@ export default function DestroyModal(){
                 <Button color="primary" variant="light" onPress={onClose}>
                   閉じる
                 </Button>
-                <Button color="danger" onPress={onClose}>
-                  削除
+                <Button color="danger" onClick={() => handleDestroy()}>
+                  削除{isLoading && "中"}
                 </Button>
               </ModalFooter>
             </>

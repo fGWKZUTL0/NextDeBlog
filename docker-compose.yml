@@ -8,6 +8,7 @@ services:
       - $STUDIO_PORT:5555
     environment:
      - WATCHPACK_POLLING=true
+     - POSTGRES_URL=$POSTGRES_URL
     command: ash -c "npm run dev & npx prisma studio"
     volumes:
       - ./nextdeblog:/myapp

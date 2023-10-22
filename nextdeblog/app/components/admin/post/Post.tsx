@@ -35,7 +35,7 @@ export default function Post({post}: PostProps){
         </div>
         {
           onMouse && 
-          <DestroyModal />
+          <DestroyModal post={post}/>
         }
       </div>
     </>
