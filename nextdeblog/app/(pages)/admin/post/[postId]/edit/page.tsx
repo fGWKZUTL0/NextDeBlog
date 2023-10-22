@@ -14,7 +14,7 @@ export default async function Page({ params }: Props){
   return(
     <div className="w-full md:w-1/2">
       {error && <span className="text-red-600 font-bold">{error}</span>}
-      <Form defaultValuesJSON={postOrError} formMode="edit" />
+      <Form postId={params.postId} defaultValuesJSON={postOrError} formMode="edit" />
     </div>
   )
 } 

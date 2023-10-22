@@ -2,23 +2,28 @@
 
 import { postsAtom } from "@/app/atoms/postAtom";
 import { createPost } from "@/app/servers/post/create";
+import { updatePost } from "@/app/servers/post/update";
 import { PostFormType } from "@/app/types/post";
-import { Textarea, Button, Link } from "@nextui-org/react";
+import { Textarea, Button, Link, input } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 
 type FormProps = {
+  postId?: string,
   defaultValuesJSON: PostFormType | { error: string },
   formMode?: "create" | "edit"
 }
 
-export default function Form({defaultValuesJSON, formMode}: FormProps){
+export default function Form({postId, defaultValuesJSON, formMode}: FormProps){
+  const router = useRouter();
   const [, setPosts] = useRecoilState(postsAtom);
   const [error, setError] = useState<string | null>(null)
   const methods = useForm<PostFormType>({
     defaultValues: {
+      id: formMode === "edit" ? postId : undefined,
       title: "",
       content: ""
     }
@@ -42,7 +47,7 @@ export default function Form({defaultValuesJSON, formMode}: FormProps){
     formState: { errors },
   } = methods;
 
-  const onSubmit = handleSubmit( async (data) => {
+  const onCreateSubmit = handleSubmit( async (data) => {
     const postOrError = await createPost(data)
 
     if("error" in postOrError){
@@ -57,10 +62,22 @@ export default function Form({defaultValuesJSON, formMode}: FormProps){
     }
   })
 
+  const onUpdateSubmit = handleSubmit( async (data) => {
+    const postOrError = await updatePost(data)
+
+    if("error" in postOrError){
+      setError(postOrError.error)
+    }else{
+      formMode === "edit" && router.push("/admin")
+    }
+  })
+
   return(
     <>
       {error && <span className="text-red-600 font-bold">{error}</span>}
-      <form onSubmit={onSubmit}>
+      <form onSubmit={
+        formMode === "create" ? onCreateSubmit : onUpdateSubmit}>
+        { formMode === "edit" && <input type="hidden" {...register("id")} /> }
         <div className="mb-2 md:w-1/2">
           <Input
             type="text"
