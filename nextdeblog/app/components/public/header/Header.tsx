@@ -20,7 +20,7 @@ export default async function Header(){
       <div>
         { session?.user ?
           <LinkAsButton href="/admin" color="secondary">
-            管理画面
+            管理画面へ
           </LinkAsButton>
         : 
           <SignIn /> 
