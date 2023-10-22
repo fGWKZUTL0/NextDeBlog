@@ -28,7 +28,7 @@ export default function Post({post}: PostProps){
           }}
         />
         <h1 className="text-2xl font-bold"> 
-          <Link href={`/admin/post/${post.id}/`} className="hover:text-blue-600">
+          <Link href={`/post/${post.id}/`} className="hover:text-blue-600">
             {post.title} 
           </Link>
         </h1>

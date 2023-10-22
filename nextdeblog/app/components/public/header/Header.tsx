@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth"
 import SignOut from "../../utils/SignOut"
 import { nextAuthOptions } from "@/app/lib/auth/options"
 import { User } from "@nextui-org/react"
+import SignIn from "../../utils/SignIn"
 
 export default async function Header(){
   const session = await getServerSession(nextAuthOptions)
@@ -16,7 +17,10 @@ export default async function Header(){
           }}
         />
       </div>
-      <SignOut />
+      { session?.user ? 
+        <SignOut />
+      : 
+        <SignIn /> }
     </header>
   )
 }

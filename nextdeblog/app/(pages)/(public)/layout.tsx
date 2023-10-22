@@ -1,3 +1,5 @@
+import Header from "@/app/components/public/header/Header"
+
 export default async function Layout({
   children,
 }: {
@@ -8,7 +10,8 @@ export default async function Layout({
     <>
       <main className="mx-6">
         <div className="md:w-[70vw] md:mx-auto">
-            {children}
+          <Header />
+          {children}
         </div>
       </main>
     </>
