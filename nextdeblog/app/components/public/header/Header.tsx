@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth"
 import { nextAuthOptions } from "@/app/lib/auth/options"
 import { User } from "@nextui-org/react"
 import SignIn from "../../utils/SignIn"
-import LinkAsButton from "../../utils/LinkasButton"
+import LinkAsButton from "../../utils/LinkAsButton"
 
 export default async function Header(){
   const session = await getServerSession(nextAuthOptions)
