@@ -1,9 +1,8 @@
 import { getServerSession } from "next-auth"
-import SignOut from "../../utils/SignOut"
 import { nextAuthOptions } from "@/app/lib/auth/options"
-import { Button, User } from "@nextui-org/react"
+import { User } from "@nextui-org/react"
 import SignIn from "../../utils/SignIn"
-import Link from "next/link"
+import LinkAsButton from "../../utils/LinkasButton"
 
 export default async function Header(){
   const session = await getServerSession(nextAuthOptions)
@@ -20,11 +19,9 @@ export default async function Header(){
       </div>
       <div>
         { session?.user ?
-        <Link href="/admin">
-          <Button color="secondary">
+          <LinkAsButton href="/admin" color="secondary">
             管理画面
-          </Button>
-        </Link>
+          </LinkAsButton>
         : 
           <SignIn /> 
         }

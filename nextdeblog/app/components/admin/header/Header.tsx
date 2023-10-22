@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth"
 import SignOut from "../../utils/SignOut"
 import { nextAuthOptions } from "@/app/lib/auth/options"
-import { Button, User } from "@nextui-org/react"
-import Link from "next/link"
+import { User } from "@nextui-org/react"
+import LinkAsButton from "../../utils/LinkasButton"
 
 export default async function Header(){
   const session = await getServerSession(nextAuthOptions)
@@ -18,11 +18,9 @@ export default async function Header(){
         />
       </div>
       <div className="flex gap-x-4">
-        <Link href="/">
-          <Button color="primary">
-            一般画面
-          </Button>
-        </Link>
+          <LinkAsButton href="/" color="primary">
+            管理画面
+          </LinkAsButton>
         <SignOut />
       </div>
     </header>
