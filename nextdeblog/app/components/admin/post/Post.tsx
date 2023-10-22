@@ -19,7 +19,7 @@ export default function Post({post}: PostProps){
     <>
       <div className="border-b-2 border-gray-200 py-4">
         <h1 className="text-2xl font-bold"> 
-          <Link href={`/admin/post/${post.id}/edit`} className="hover:text-blue-600">
+          <Link href={`/admin/post/${post.id}/edit`} className="text-blue-600 md:text-black md:hover:text-blue-600">
             {post.title} 
           </Link>
         </h1>

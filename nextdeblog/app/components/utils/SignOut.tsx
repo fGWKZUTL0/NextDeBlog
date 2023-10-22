@@ -7,7 +7,7 @@ export default function SignOut(){
 
   return(
     <>
-      <Button color="warning" className="text-white" onClick={() => signOut({callbackUrl: ("/sign_in")})}>
+      <Button color="warning" className="text-white" onClick={() => signOut({callbackUrl: ("/")})}>
         ログアウト
       </Button> 
     </>
