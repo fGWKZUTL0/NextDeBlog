@@ -18,9 +18,9 @@ export default async function Header(){
         />
       </div>
       <div className="flex gap-x-4">
-          <LinkAsButton href="/" color="primary">
-            管理画面
-          </LinkAsButton>
+        <LinkAsButton href="/" color="primary">
+          一般画面
+        </LinkAsButton>
         <SignOut />
       </div>
     </header>
