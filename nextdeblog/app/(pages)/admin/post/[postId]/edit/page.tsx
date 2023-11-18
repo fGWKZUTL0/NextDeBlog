@@ -1,5 +1,7 @@
 import { getPost } from "@/app/servers/post/getPost"
 import Form from "../../../(form)/Form"
+import { useEffect, useState } from "react"
+import { PostFormType } from "@/app/types/post"
 
 type Props = {
   params: {
@@ -8,13 +10,11 @@ type Props = {
 }
 
 export default async function Page({ params }: Props){
-  const postOrError = await getPost(params.postId)
-  let error = null
+  const serverPost = await getPost(params.postId);
 
   return(
     <div className="w-full md:w-1/2">
-      {error && <span className="text-red-600 font-bold">{error}</span>}
-      <Form postId={params.postId} defaultValuesJSON={postOrError} formMode="edit" />
+      <Form defaultValuesJSON={serverPost} formMode="edit" />
     </div>
   )
 } 
