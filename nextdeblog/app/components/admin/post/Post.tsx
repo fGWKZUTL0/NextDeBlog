@@ -2,7 +2,6 @@
 
 import { Post } from "@prisma/client";
 import Link from "next/link";
-import { useState } from "react";
 import DestroyModal from "./DestroyModal";
 
 export type PostProps = {
