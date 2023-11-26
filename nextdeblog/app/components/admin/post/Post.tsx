@@ -10,8 +10,7 @@ export type PostProps = {
 }
 
 export default function Post({post}: PostProps){
-  const [onMouse, setOnMouse] = useState(false)
-
+  
   const updatedAtJPNText = [
     `${post.updatedAt.getFullYear()}年`,
     `${post.updatedAt.getMonth() + 1}月`,
@@ -23,7 +22,7 @@ export default function Post({post}: PostProps){
   
   return(
     <>
-      <div className="flex flex-1 items-center justify-between w-full border-b-2 border-gray-200" onMouseOver={() => setOnMouse(true)} onMouseOut={() => setOnMouse(false)}>
+      <div className="group flex flex-1 items-center justify-between w-full border-b-2 border-gray-200">
         <div className="py-4">
           <h1 className="text-2xl font-bold"> 
             <Link href={`/admin/post/${post.id}/edit`} className="text-blue-600 md:text-black md:hover:text-blue-600">
@@ -33,10 +32,9 @@ export default function Post({post}: PostProps){
           <p className="text-gray-600 line-clamp-2">{post.content}</p>
           <p className="mt-2">最終更新日: {updatedAtJPNText.join("")}</p>
         </div>
-        {
-          onMouse && 
-          <DestroyModal post={post}/>
-        }
+        <div className="hidden group-hover:block">
+          <DestroyModal post={post} />
+        </div>
       </div>
     </>
   )

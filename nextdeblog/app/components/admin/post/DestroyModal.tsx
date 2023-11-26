@@ -4,6 +4,7 @@ import { postsAtom } from "@/app/atoms/postAtom";
 import { destroyPost } from "@/app/servers/post/destroy";
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
 import { Post } from "@prisma/client";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -12,9 +13,9 @@ type DestroyModalProps = {
 }
 
 export default function DestroyModal({post}: DestroyModalProps){
-  const [posts, setPosts] = useRecoilState(postsAtom);
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const {isOpen, onOpen, onClose} = useDisclosure();
+  const router = useRouter()
   
   const handleDestroy = async () => {
     if(isLoading) return
@@ -24,17 +25,19 @@ export default function DestroyModal({post}: DestroyModalProps){
 
     if("error" in deletedPost){
       alert(deletedPost.error)
-    }else{
-      setPosts(posts.filter((post) => post.id !== deletedPost.id))
+      return
     }
 
     setIsLoading(false)
+    router.refresh()
     onClose()
   }
 
   return(
     <>
-      <div className="w-fit h-full bg-orange-700 rounded-full" onClick={() => onOpen()}>
+      <div className="w-fit h-full bg-orange-700 rounded-full" onClick={() =>{ 
+        onOpen()
+      }}>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
