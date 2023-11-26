@@ -1,35 +1,32 @@
-"use client";
-
-import { postWithUserAtom } from "@/app/atoms/postAtom";
-import { useState, useEffect } from "react";
-import { useRecoilState } from "recoil";
-import Post from "./Post";
+import { Post as PostType, User as UserType } from "@prisma/client";
+import Post from "../../utils/posts/Post";
 import { getPublicPosts } from "@/app/servers/post/getPublicPosts";
+import LinkAsPageNation from "../../utils/LinkAsPageNation";
 
-export default function Posts() {
-  const [posts, setPosts] = useRecoilState(postWithUserAtom);
-  const [error, setError] = useState<string | null>(null)
+interface Props {
+  pageNum: number;
+}
 
-  useEffect(() => {
-    async function fetchPosts() {
-      const postsOrError = await getPublicPosts();
-      if("error" in postsOrError){
-        setError(postsOrError.error);
-      }else{
-        setPosts(postsOrError);
-      }
-    }
-    fetchPosts();
-  }, [setPosts]);
+type PostsWithUser = Array<
+  {user: UserType} & PostType
+>;
+
+export default async function Posts({pageNum}: Props) {
+  const [PostsWithUser, totalPage] = await getPublicPosts(pageNum) as [PostsWithUser, number];
 
   return (
     <>
-      { error && <span className="text-red-600 font-bold">{error}</span> }
       {
-        posts.map((post) => (
+        PostsWithUser.map((post) => (
           <Post key={post.id} post={post} />
         ))
       }
+      <div className="mt-6">
+        <LinkAsPageNation
+          pageNum={pageNum}
+          totalPage={totalPage}
+        />
+      </div>
     </> 
   );
 }

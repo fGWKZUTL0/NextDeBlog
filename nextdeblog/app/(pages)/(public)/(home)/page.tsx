@@ -1,10 +1,19 @@
 import Posts from "@/app/components/public/post/Posts";
+import { Suspense } from "react";
 
-export default function Page(){
+interface Props {
+  searchParams: { [key: string]: string | undefined }
+}
+
+
+export default async function Page({searchParams}: Props){
+  const pageNum = parseInt(searchParams.page || "1")
 
   return(
     <>
-      <Posts />
+    <Suspense>
+      <Posts pageNum={pageNum}/>
+    </Suspense>
     </>
   )
 }

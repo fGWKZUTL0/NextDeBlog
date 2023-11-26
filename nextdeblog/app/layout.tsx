@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import AppProvider from './providers/provider'
+import NextTopLoader from 'nextjs-toploader';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
+        <NextTopLoader />
         <AppProvider>
           {children}
         </AppProvider>

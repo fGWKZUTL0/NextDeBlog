@@ -1,28 +1,32 @@
-"use client";
+import Post from "../../utils/posts/Post";
+import { Post as PostType, User as UserType } from "@prisma/client";
+import { getMyPosts } from "@/app/servers/post/getMyPosts";
+import LinkAsPageNation from "../../utils/LinkAsPageNation";
 
-import Post from "./Post";
-import { Post as PostProp } from "@prisma/client";
-import { UserType } from "@/app/types/user";
-
-interface PostsProps {
-  postsOrError: Array<PostProp & {user: UserType}> | { error: string; }
+interface Props {
+  pageNum: number;
 }
 
-export default function Posts({postsOrError}: PostsProps) {
+type PostsWithUser = Array<
+  {user: UserType} & PostType
+>;
+
+export default async function Posts({pageNum}: Props) {
+  const [PostsWithUser, totalPage] = await getMyPosts(pageNum) as [PostsWithUser, number];
 
   return (
     <>
       {
-        "error" in postsOrError 
-      ? 
-        <span className="text-red-600 font-bold">
-          {postsOrError.error}
-        </span>
-      : 
-        postsOrError.map((post) => (
-          <Post key={post.id} post={post} />
+        PostsWithUser.map((post) => (
+          <Post key={post.id} post={post} isAdmin={true} />
         ))
       }
+      <div className="mt-6">
+        <LinkAsPageNation
+          pageNum={pageNum}
+          totalPage={totalPage}
+        />
+      </div>
     </> 
   );
 }
