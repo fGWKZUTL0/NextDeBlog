@@ -1,5 +1,5 @@
-import Post from "./Post";
-import { Post as PostType } from "@prisma/client";
+import Post from "../../utils/posts/Post";
+import { Post as PostType, User as UserType } from "@prisma/client";
 import { getMyPosts } from "@/app/servers/post/getMyPosts";
 import LinkAsPageNation from "../../utils/LinkAsPageNation";
 
@@ -7,7 +7,7 @@ interface Props {
   pageNum: number;
 }
 
-type PostsOrError = PostType[] | { error: string };
+type PostsOrError = Array<PostType & {user: UserType}> | { error: string };
 
 export default async function Posts({pageNum}: Props) {
   const [postsOrError, totalPage] = await getMyPosts(pageNum) as [PostsOrError, number];
@@ -22,7 +22,7 @@ export default async function Posts({pageNum}: Props) {
         </span>
       : 
         postsOrError.map((post) => (
-          <Post key={post.id} post={post} />
+          <Post key={post.id} post={post} isAdmin={true} />
         ))
       }
       <div className="mt-6">

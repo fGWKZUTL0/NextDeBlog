@@ -18,7 +18,7 @@ export default function LinkAsPageNation({pageNum, totalPage}: PageNationProps) 
       initialPage={pageNum}
       showControls
       onChange={(page) => {
-        router.push(`${pathname}?page=${page}`)
+        router.push(`${pathname}?page=${page}`, { scroll: false })
       }}
     />
   )

@@ -1,15 +1,17 @@
-"use client"
-
-import { Post } from "@prisma/client";
+import { UserType } from "@/app/types/user";
+import { User } from "@nextui-org/react";
+import { Post as PostType } from "@prisma/client";
 import Link from "next/link";
-import DestroyModal from "./DestroyModal";
+import DestroyModal from "../../admin/post/DestroyModal";
 
 export type PostProps = {
-  post: Post
+  post: PostType & {
+    user: UserType
+  },
+  isAdmin?: boolean
 }
 
-export default function Post({post}: PostProps){
-  
+export default function Post({post, isAdmin = false}: PostProps){
   const updatedAtJPNText = [
     `${post.updatedAt.getFullYear()}年`,
     `${post.updatedAt.getMonth() + 1}月`,
@@ -22,9 +24,15 @@ export default function Post({post}: PostProps){
   return(
     <>
       <div className="group flex flex-1 items-center justify-between w-full border-b-2 border-gray-200">
-        <div className="py-4">
+        <div className="border-b-2 border-gray-200 py-4">
+          <User   
+            name={post?.user?.name}
+            avatarProps={{
+              src: post?.user?.image || ""
+            }}
+          />
           <h1 className="text-2xl font-bold"> 
-            <Link href={`/admin/post/${post.id}/edit`} className="text-blue-600 md:text-black md:hover:text-blue-600">
+            <Link href={`/post/${post.id}/`} className="text-blue-600 md:text-black md:hover:text-blue-600">
               {post.title} 
             </Link>
           </h1>
@@ -32,7 +40,7 @@ export default function Post({post}: PostProps){
           <p className="mt-2">最終更新日: {updatedAtJPNText.join("")}</p>
         </div>
         <div className="hidden group-hover:block">
-          <DestroyModal post={post} />
+          { isAdmin && <DestroyModal post={post} />}
         </div>
       </div>
     </>

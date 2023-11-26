@@ -3,7 +3,7 @@
 import { postWithUserAtom } from "@/app/atoms/postAtom";
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import Post from "./Post";
+import Post from "../../utils/posts/Post";
 import { getPublicPosts } from "@/app/servers/post/getPublicPosts";
 
 export default function Posts() {
