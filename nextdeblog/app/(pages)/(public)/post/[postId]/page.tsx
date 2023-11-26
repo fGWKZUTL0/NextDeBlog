@@ -8,15 +8,15 @@ type Props = {
 }
 
 export default async function Page({ params }: Props){
-  const post = await getPost(params.postId)
+  try{
+    const post = await getPost(params.postId)
 
-  return(
-    <>{
-      "error" in post ? <span className="text-red-600 font-bold">{post.error}</span> :
+    return(
       <>
         <RichPost post={post} />
       </>
-    }
-    </>
-  )
+    )
+  }catch(error){
+    console.log(error)
+  }
 }
