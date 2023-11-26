@@ -50,9 +50,14 @@ export default function Form({defaultValuesJSON, formMode}: FormProps){
 
     if("error" in postOrError){
       setError(postOrError.error)
-    }else{
-      formMode === "edit" && router.push("/admin")
+      return
     }
+      
+    if(formMode === "edit"){
+      router.refresh()
+      router.push("/admin")
+    }
+    
   })
 
   return(
@@ -90,7 +95,9 @@ export default function Form({defaultValuesJSON, formMode}: FormProps){
           { formMode === "edit" &&
             <Button
               // href属性だと普通にリダイレクトされてしまうので、onClickでrouter.pushを使う
-              onClick={() => router.push("/admin")}
+              onClick={() =>{
+                router.push("/admin")
+              }}
               color={"primary"}>
                 一覧に戻る
             </Button>
