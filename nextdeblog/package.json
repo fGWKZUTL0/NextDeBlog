@@ -17,6 +17,7 @@
     "framer-motion": "^10.16.4",
     "next": "13.5.6",
     "next-auth": "^4.24.3",
+    "nextjs-toploader": "^1.6.4",
     "prettier-plugin-tailwindcss": "^0.5.6",
     "prisma": "^5.4.2",
     "react": "^18",
