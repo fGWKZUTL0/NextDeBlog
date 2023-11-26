@@ -7,21 +7,17 @@ interface Props {
   pageNum: number;
 }
 
-type PostsOrError = Array<PostType & {user: UserType}> | { error: string };
+type PostsWithUser = Array<
+  {user: UserType} & PostType
+>;
 
 export default async function Posts({pageNum}: Props) {
-  const [postsOrError, totalPage] = await getMyPosts(pageNum) as [PostsOrError, number];
+  const [PostsWithUser, totalPage] = await getMyPosts(pageNum) as [PostsWithUser, number];
 
   return (
     <>
       {
-        "error" in postsOrError 
-      ? 
-        <span className="text-red-600 font-bold">
-          {postsOrError.error}
-        </span>
-      : 
-        postsOrError.map((post) => (
+        PostsWithUser.map((post) => (
           <Post key={post.id} post={post} isAdmin={true} />
         ))
       }

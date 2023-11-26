@@ -51,6 +51,6 @@ export const getMyPosts = async (pageNum: number) => {
     return [posts, totalPage]
 
   }catch (error) {
-    return { error: "投稿の取得に失敗しました" }
+    throw new Error("投稿の取得に失敗しました")
   }
 }
