@@ -25,7 +25,7 @@ export const getMyPosts = async (pageNum: number) => {
           userId: user.id,
         },
         orderBy: {
-          createdAt: "desc",
+          updatedAt: "desc",
         },
         skip: skip,
         take: PAGE_SIZE,

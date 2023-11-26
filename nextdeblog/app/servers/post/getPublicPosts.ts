@@ -12,7 +12,7 @@ export const getPublicPosts = async (pageNum: number) => {
     const [posts, totalNum] = await prisma.$transaction([
       prisma.post.findMany({
         orderBy: {
-          createdAt: "desc",
+          updatedAt: "desc",
         },
         skip: skip,
         take: PAGE_SIZE,

@@ -20,6 +20,8 @@ export default function Post({post, isAdmin = false}: PostProps){
     `${post.updatedAt.getMinutes()}分`,
     `${post.updatedAt.getSeconds()}秒`,
   ]
+
+  const postURL = `${isAdmin ? "/admin" : ""}/post/${post.id}/${isAdmin ? "edit": ""}`;
   
   return(
     <>
@@ -32,7 +34,7 @@ export default function Post({post, isAdmin = false}: PostProps){
             }}
           />
           <h1 className="text-2xl font-bold"> 
-            <Link href={`/post/${post.id}/`} className="text-blue-600 md:text-black md:hover:text-blue-600">
+            <Link href={postURL} className="text-blue-600 md:text-black md:hover:text-blue-600">
               {post.title} 
             </Link>
           </h1>
