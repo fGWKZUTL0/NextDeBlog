@@ -4,6 +4,7 @@ import { postsAtom } from "@/app/atoms/postAtom";
 import { destroyPost } from "@/app/servers/post/destroy";
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
 import { Post } from "@prisma/client";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -12,9 +13,9 @@ type DestroyModalProps = {
 }
 
 export default function DestroyModal({post}: DestroyModalProps){
-  const [posts, setPosts] = useRecoilState(postsAtom);
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const {isOpen, onOpen, onClose} = useDisclosure();
+  const router = useRouter()
   
   const handleDestroy = async () => {
     if(isLoading) return
@@ -24,11 +25,11 @@ export default function DestroyModal({post}: DestroyModalProps){
 
     if("error" in deletedPost){
       alert(deletedPost.error)
-    }else{
-      setPosts(posts.filter((post) => post.id !== deletedPost.id))
+      return
     }
 
     setIsLoading(false)
+    router.refresh()
     onClose()
   }
 

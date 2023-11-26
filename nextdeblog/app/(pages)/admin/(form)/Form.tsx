@@ -7,7 +7,7 @@ import { PostFormType } from "@/app/types/post";
 import { Textarea, Button } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 
@@ -18,7 +18,6 @@ type FormProps = {
 
 export default function Form({defaultValuesJSON, formMode}: FormProps){
   const router = useRouter();
-  const [, setPosts] = useRecoilState(postsAtom);
   const [error, setError] = useState<string | null>(null)
   const methods = useForm<PostFormType>({
     defaultValues: defaultValuesJSON
@@ -35,14 +34,15 @@ export default function Form({defaultValuesJSON, formMode}: FormProps){
 
     if("error" in postOrError){
       setError(postOrError.error)
-    }else{
-      methods.reset({
-        title: "",
-        content: ""
-      })
-
-      setPosts((prev) => [postOrError, ...prev])
+      return
     }
+
+    router.refresh()
+
+    methods.reset({
+      title: "",
+      content: ""
+    })
   })
 
   const onUpdateSubmit = handleSubmit( async (data) => {
@@ -53,11 +53,8 @@ export default function Form({defaultValuesJSON, formMode}: FormProps){
       return
     }
       
-    if(formMode === "edit"){
-      router.refresh()
-      router.push("/admin")
-    }
-    
+    router.refresh()
+    router.push("/admin")
   })
 
   return(

@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import NextAuthProvider from '@/app/providers/NextAuthProvider'
 import AppProvider from './providers/provider'
 
 export const metadata: Metadata = {
@@ -14,13 +13,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="ja">
       <body>
-        <NextAuthProvider>
-          <AppProvider>
-            {children}
-          </AppProvider>
-        </NextAuthProvider>
+        <AppProvider>
+          {children}
+        </AppProvider>
       </body>
     </html>
   )
