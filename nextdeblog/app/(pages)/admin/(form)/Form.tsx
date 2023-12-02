@@ -93,7 +93,7 @@ export default function Form({defaultValuesJSON, formMode}: FormProps){
             <Button
               // href属性だと普通にリダイレクトされてしまうので、onClickでrouter.pushを使う
               onClick={() =>{
-                router.push("/admin")
+                router.back()
               }}
               color={"primary"}>
                 一覧に戻る
